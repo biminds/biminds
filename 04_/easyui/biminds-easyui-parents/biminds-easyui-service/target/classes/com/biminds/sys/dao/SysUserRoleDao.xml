@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SysUserRoleDao">
+	<resultMap id="BaseResultMap" type="SysUserRoleEntity">
+		<id column="user_role_id" property="userRoleId" jdbcType="CHAR" />
+		<result column="user_id" property="userId" jdbcType="CHAR" />
+		<result column="role_id" property="roleId" jdbcType="CHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		user_role_id, role_id, user_id
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user_role
+		where user_role_id = #{userRoleId,jdbcType=CHAR}
+	</select>
+	<insert id="insertSelective" parameterType="SysUserRoleEntity">
+		insert into sys_user_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userRoleId != null">
+				user_role_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="roleId != null">
+				role_id
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userRoleId != null">
+				#{userRoleId,jdbcType=CHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=CHAR},
+			</if>
+			<if test="roleId != null">
+				#{roleId,jdbcType=CHAR}
+			</if>
+		</trim>
+	</insert>
+	<!-- 根据角色ID删除角色权限列表 -->
+	<delete id="deleteUserRoleByUserId" parameterType="java.lang.String">
+		delete from sys_user_role where user_id = #{userId,jdbcType=CHAR}
+	</delete>
+</mapper>
